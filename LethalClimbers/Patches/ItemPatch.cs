@@ -26,7 +26,7 @@ namespace LethalClimbers.Patches
 
             public ItemData(string path, int rarity)
             {
-                WriteItemData(path, rarity, false, 0);
+                WriteItemData(path, rarity, false, "None", 0);
             }
 
             public ItemData(string path, int rarity, bool isStoreItem)
