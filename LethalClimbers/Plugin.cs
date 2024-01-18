@@ -17,30 +17,29 @@ namespace LethalClimbers
 
         private readonly Harmony harmony = new Harmony(ModGUID);
         private static BasePlugin Instance;
-        internal ManualLogSource LogSource;
 
+        public static ManualLogSource LogSource;
         public static AssetBundle ItemAssetBundle;
 
         void Awake()
         {
+            // Safety catch
             if (Instance == null)
             {
                 Instance = this;
             }
 
+            // Prepare logger
             LogSource = BepInEx.Logging.Logger.CreateLogSource(ModGUID);
 
             // Prepare item assets bundle
             string ItemBundlePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "customitems");
             ItemAssetBundle = AssetBundle.LoadFromFile(ItemBundlePath);
 
-            // Start items patch
-            // ItemPatch.Start();
+            // Items patch
+            ItemPatch.Start();
 
-            // Patch
-            // Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly(), ModGUID);
-
-            // Infinite sprinting patch
+            // Stamina patch
             harmony.PatchAll(typeof(PlayerControllerBPatch));
 
             // Plugin startup notice
