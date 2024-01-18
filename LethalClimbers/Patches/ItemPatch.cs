@@ -6,30 +6,57 @@ namespace LethalClimbers.Patches
     {
         public class ItemData
         {
-            private string AssetName;
+            private string Path;
+            private string Name;
+            private string Description;
             private int Rarity;
             private bool IsStoreItem;
+            private int StoreValue;
             private Item ItemRef;
 
-            public ItemData(string name, int rarity, bool isStoreItem)
+            private void WriteItemData(string path, int rarity, bool isStoreItem, string description, int storeValue)
             {
-                AssetName = "Assets/Items/" + name;
+                Path = "Assets/Items/" + path;
+                Name = path.Split(".")[0];
                 Rarity = rarity;
                 IsStoreItem = isStoreItem;
+                Description = description;
+                StoreValue = storeValue;
             }
 
-            public string GetItemPath() { return AssetName; }
+            public ItemData(string path, int rarity)
+            {
+                WriteItemData(path, rarity, false, 0);
+            }
+
+            public ItemData(string path, int rarity, bool isStoreItem)
+            {
+                WriteItemData(path, rarity, isStoreItem, "None", 0);
+            }
+
+            public ItemData(string path, int rarity, bool isStoreItem, string description)
+            {
+                WriteItemData(path, rarity, isStoreItem, "None", 0);
+            }
+
+            public ItemData(string path, int rarity, bool isStoreItem, string description, int storeValue)
+            {
+                WriteItemData(path, rarity, isStoreItem, "None", storeValue);
+            }
+
+            public string GetItemPath() { return Path; }
+            public string GetItemName() { return Name; }
+            public string GetItemDescription() { return Description; }
             public int GetRarity() { return Rarity; }
             public bool GetIsStoreItem() { return IsStoreItem; }
+            public int GetStoreValue() { return StoreValue; }
             public void SetItem(Item ItemToSet) { ItemRef = ItemToSet; }
             public Item GetItem() { return ItemRef; }
 
         }
 
         public static ItemData[] ItemList = new ItemData[] {
-            new ItemData("ChalkBagItem.asset", 1000, true),
-            new ItemData("MatchBoxItem.asset", 1000, true),
-            // new ItemData("TapeItem.asset", 1000, true)
+            new ItemData("Grigri.asset", 1000)
         };
 
         public static void Start()
@@ -58,8 +85,8 @@ namespace LethalClimbers.Patches
                 {
                     TerminalNode terminalNode = UnityEngine.ScriptableObject.CreateInstance<TerminalNode>();
                     terminalNode.clearPreviousText = true;
-                    terminalNode.displayText = string.Format("This is info about a {0}\n\n", ThisScrapItemAsset.name);
-                    Items.RegisterShopItem(ThisScrapItemAsset, null, null, terminalNode, 0);
+                    terminalNode.displayText = string.Format("This is info about a {0}\n\n", ThisScrapItem.GetItemName());
+                    Items.RegisterShopItem(ThisScrapItemAsset, null, null, terminalNode, ThisScrapItem.GetStoreValue());
                 }
 
                 BasePlugin.LogSource.LogInfo("Item Loaded: " + ThisScrapItemAsset.name);
