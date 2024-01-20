@@ -16,7 +16,7 @@ namespace LethalClimbers.Patches
 
             private void WriteItemData(string path, int rarity, bool isStoreItem, string description, int storeValue)
             {
-                Path = "Assets/Items/" + path;
+                Path = "Assets/Items/" + path + "/" + path + ".asset";
                 Name = path.Split(".")[0];
                 Rarity = rarity;
                 IsStoreItem = isStoreItem;
@@ -36,12 +36,12 @@ namespace LethalClimbers.Patches
 
             public ItemData(string path, int rarity, bool isStoreItem, string description)
             {
-                WriteItemData(path, rarity, isStoreItem, "None", 0);
+                WriteItemData(path, rarity, isStoreItem, description, 0);
             }
 
             public ItemData(string path, int rarity, bool isStoreItem, string description, int storeValue)
             {
-                WriteItemData(path, rarity, isStoreItem, "None", storeValue);
+                WriteItemData(path, rarity, isStoreItem, description, storeValue);
             }
 
             public string GetItemPath() { return Path; }
@@ -56,7 +56,7 @@ namespace LethalClimbers.Patches
         }
 
         public static ItemData[] ItemList = new ItemData[] {
-            new ItemData("Grigri.asset", 1000)
+            new ItemData("Grigri", 50)
         };
 
         public static void Start()
