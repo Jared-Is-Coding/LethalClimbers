@@ -1,0 +1,12 @@
+{
+  	"namespace": "JaredIsCoding",
+	"name": "LethalClimbers",
+	"description": "Adds a handful of rock climbing related scraps to the game, with additional items and abilities planned for the future.",
+	"version_number": "1.0.0",
+	"dependencies": [
+		"BepInEx-BepInExPack-5.4.2100",
+		"Ozone-Runtime_Netcode_Patcher-0.2.5",
+		"Evaisa-LethalLib-0.13.2"
+	],
+	"website_url": "https://jarediscoding.com/"
+}
