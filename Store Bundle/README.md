@@ -12,3 +12,6 @@ Adds the following scraps:
 - Helmet
 - Rope
 - Quickdraw
+
+Contributors:
+- 3d model textures by [AidanShipperley](https://github.com/AidanShipperley)
