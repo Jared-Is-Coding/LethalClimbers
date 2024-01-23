@@ -94,7 +94,7 @@ namespace LethalClimbers.Patches
                     Items.RegisterShopItem(ThisScrapItemAsset, null, null, terminalNode, ThisScrapItem.GetStoreValue());
                 }
 
-                BasePlugin.LogSource.LogInfo("Item Loaded: " + ThisScrapItemAsset.name);
+                BasePlugin.LogSource.LogInfo("Climbing item loaded: " + ThisScrapItemAsset.name);
             }
         }
     }

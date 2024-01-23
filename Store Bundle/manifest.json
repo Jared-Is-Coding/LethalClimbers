@@ -1,0 +1,11 @@
+{
+	"name": "LethalClimbers",
+	"version_number": "1.0.0",
+	"description": "A Lethal Company mod for rock climbers! Add some familiar objects, and shake out on some company-issued ladders.",
+	"website_url": "https://jarediscoding.com/",
+	"dependencies": [
+		"BepInEx-BepInExPack-5.4.2100",
+		"Ozone-Runtime_Netcode_Patcher-0.2.5",
+		"Evaisa-LethalLib-0.13.2"
+	]
+}
