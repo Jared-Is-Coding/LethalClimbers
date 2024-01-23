@@ -8,7 +8,7 @@ Adds the following effects:
 Adds the following scraps:
 - Chalk Bag
 - Climbing Hold
-- Gri Gri
+- Petzl Grigri
 - Helmet
 - Rope
 - Quickdraw
