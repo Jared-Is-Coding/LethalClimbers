@@ -12,7 +12,7 @@ namespace LethalClimbers.Patches
         {
             if (___isClimbingLadder)
             {
-                ___sprintMeter = UnityEngine.Mathf.Clamp(___sprintMeter + UnityEngine.Time.deltaTime / (___sprintTime + 27f), 0f, 1f); ;
+                ___sprintMeter = UnityEngine.Mathf.Clamp(___sprintMeter + 0.002f + UnityEngine.Time.deltaTime / (___sprintTime), 0f, 1f); ;
 
                 BasePlugin.LogSource.LogInfo("Climber is resting. Sprint meter: " + ___sprintMeter.ToString());
             }
