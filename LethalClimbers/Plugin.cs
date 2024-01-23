@@ -13,7 +13,7 @@ namespace LethalClimbers
     {
         private const string ModGUID = "jarediscoding.lethalclimbers";
         private const string ModName = "Lethal Climbers";
-        private const string ModVersion = "1.0.0";
+        private const string ModVersion = "1.0.1";
 
         private readonly Harmony harmony = new Harmony(ModGUID);
         private static BasePlugin Instance;
