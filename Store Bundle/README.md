@@ -13,5 +13,9 @@ Adds the following scraps:
 - Rope
 - Quickdraw
 
+Modifies the following game behaviors:
+- Eyeless Dogs will now have a tasteful Adam Ondra power scream when they are aggravated
+
 Contributors:
 - 3d model textures by [AidanShipperley](https://github.com/AidanShipperley)
+- Audio clips by [vulnic](https://github.com/vulnic)
