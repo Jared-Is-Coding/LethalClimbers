@@ -51,7 +51,7 @@ namespace LethalClimbers.CustomItems
                 // Debug
                 BasePlugin.LogSource.LogDebug("noiseAudio.PlayOneShot was called");
 
-                if (noiseAudioFar != null)
+                if (noiseAudioFar != null && !noiseAudioFar.isPlaying)
                 {
                     noiseAudioFar.pitch = pitch;
                     noiseAudioFar.PlayOneShot(noiseSFXFar[randomNoisePosition], volumeScale);
