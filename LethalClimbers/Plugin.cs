@@ -2,6 +2,7 @@
 using BepInEx.Logging;
 using HarmonyLib;
 using LethalClimbers.Patches;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using UnityEngine;
@@ -11,15 +12,24 @@ namespace LethalClimbers
     [BepInPlugin(ModGUID, ModName, ModVersion)]
     public class BasePlugin : BaseUnityPlugin
     {
-        private const string ModGUID = "jarediscoding.lethalclimbers";
-        private const string ModName = "Lethal Climbers";
-        private const string ModVersion = "1.0.2";
-
-        private readonly Harmony harmony = new Harmony(ModGUID);
         private static BasePlugin Instance;
 
+        // Base mod configuration
+        private const string ModGUID = "jarediscoding.lethalclimbers";
+        private const string ModName = "Lethal Climbers";
+        private const string ModVersion = "1.0.3"; // This should be bumped up for every release
+
+        // Logging
         public static ManualLogSource LogSource;
+
+        // Harmony framework prep
+        private readonly Harmony harmony = new Harmony(ModGUID);
+
+        // Assets preparation
         public static AssetBundle ItemAssetBundle;
+
+        // Audio clip lists
+        public static List<AudioClip> MouthDogAIAudioClips = new List<AudioClip>();
 
         void Awake()
         {
@@ -41,6 +51,13 @@ namespace LethalClimbers
 
             // Stamina patch
             harmony.PatchAll(typeof(PlayerControllerBPatch));
+
+            // Start of round audio patch
+            // harmony.PatchAll(typeof(StartOfRoundPatch));
+
+            // MouthDogAI audio patch
+            MouthDogAIAudioClips.Add(ItemAssetBundle.LoadAsset<AudioClip>("Assets/Sounds/Enemies/MouthDog/OndraYell1.wav"));
+            harmony.PatchAll(typeof(MouthDogAIPatch));
 
             // Plugin startup notice
             LogSource.LogInfo($"{ModGUID} is loaded.");

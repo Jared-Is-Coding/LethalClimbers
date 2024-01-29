@@ -1,4 +1,4 @@
-﻿using LethalLib.Modules;
+using LethalLib.Modules;
 
 namespace LethalClimbers.Patches
 {
@@ -52,7 +52,6 @@ namespace LethalClimbers.Patches
             public int GetStoreValue() { return StoreValue; }
             public void SetItem(Item ItemToSet) { ItemRef = ItemToSet; }
             public Item GetItem() { return ItemRef; }
-
         }
 
         public static ItemData[] ItemList = new ItemData[] {
@@ -94,7 +93,7 @@ namespace LethalClimbers.Patches
                     Items.RegisterShopItem(ThisScrapItemAsset, null, null, terminalNode, ThisScrapItem.GetStoreValue());
                 }
 
-                BasePlugin.LogSource.LogInfo("Climbing item loaded: " + ThisScrapItemAsset.name);
+                BasePlugin.LogSource.LogDebug("Climbing item loaded: " + ThisScrapItemAsset.name);
             }
         }
     }
