@@ -2,6 +2,12 @@
 
 Here's what I've been up to...
 
+## v1.0.4
+- Update README.md to add contributors
+- Add COPYING
+- The Git repository for this mod is now public. I hope this can help you on your modding journey!
+- Update manifest.json to point to Git repository
+
 ## v1.0.3
 - Update ScanNode hitboxes for Helmet and Rope items
 - Update weights of Climbing Hold, Helmet, and Grigri to be more realistic

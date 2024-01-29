@@ -17,7 +17,7 @@ namespace LethalClimbers
         // Base mod configuration
         private const string ModGUID = "jarediscoding.lethalclimbers";
         private const string ModName = "Lethal Climbers";
-        private const string ModVersion = "1.0.3"; // This should be bumped up for every release
+        private const string ModVersion = "1.0.4"; // This should be bumped up for every release
 
         // Logging
         public static ManualLogSource LogSource;
