@@ -84,6 +84,8 @@ namespace LethalClimbers
 
             BoomBoxItemAudioClips.Add(ItemAssetBundle.LoadAsset<AudioClip>("Assets/Sounds/BoomBox/RappSnitch.wav"));
             BoomBoxItemAudioClips.Add(ItemAssetBundle.LoadAsset<AudioClip>("Assets/Sounds/BoomBox/MorgIce.wav"));
+            BoomBoxItemAudioClips.Add(ItemAssetBundle.LoadAsset<AudioClip>("Assets/Sounds/BoomBox/Stay.wav"));
+            BoomBoxItemAudioClips.Add(ItemAssetBundle.LoadAsset<AudioClip>("Assets/Sounds/BoomBox/BoyLiarPt2.wav"));
             harmony.PatchAll(typeof(BoomBoxItemPatch));
 
             LogSource.LogInfo($"Boombox audio patch complete");
