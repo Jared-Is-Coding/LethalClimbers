@@ -2,6 +2,10 @@
 
 Here's what I've been up to...
 
+## v1.0.5
+- Add 1 new item
+  - Chalk Brush
+
 ## v1.0.4
 - Update README.md to add contributors
 - Add COPYING
