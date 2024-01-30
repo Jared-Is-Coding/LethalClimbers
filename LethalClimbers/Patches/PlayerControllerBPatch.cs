@@ -16,7 +16,7 @@ namespace LethalClimbers.Patches
                 ___sprintMeter = UnityEngine.Mathf.Clamp(___sprintMeter + 0.002f + UnityEngine.Time.deltaTime / (___sprintTime), 0f, 1f); ;
 
                 // Debug logging
-                BasePlugin.LogSource.LogDebug("Climber is resting. Sprint meter: " + ___sprintMeter.ToString());
+                BasePlugin.LogSource.LogDebug($"Climber is resting. Sprint meter: {___sprintMeter}");
             }
         }
     }

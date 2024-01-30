@@ -1,4 +1,4 @@
-﻿using BepInEx;
+using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
 using LethalClimbers.Patches;
@@ -17,7 +17,7 @@ namespace LethalClimbers
         // Base mod configuration
         private const string ModGUID = "jarediscoding.lethalclimbers";
         private const string ModName = "Lethal Climbers";
-        private const string ModVersion = "1.0.5"; // This should be bumped up for every release
+        private const string ModVersion = "1.0.6"; // This should be bumped up for every release
 
         // Logging
         public static ManualLogSource LogSource;
@@ -30,6 +30,7 @@ namespace LethalClimbers
 
         // Audio clip lists
         public static List<AudioClip> MouthDogAIAudioClips = new List<AudioClip>();
+        public static List<AudioClip> BoomBoxItemAudioClips = new List<AudioClip>();
 
         void Awake()
         {
@@ -42,25 +43,56 @@ namespace LethalClimbers
             // Prepare logger
             LogSource = BepInEx.Logging.Logger.CreateLogSource(ModGUID);
 
-            // Prepare item assets bundle
+            // -------------------------------------------------------- //
+            // Items patch
+            // -------------------------------------------------------- //
+
             string ItemBundlePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "customitems");
             ItemAssetBundle = AssetBundle.LoadFromFile(ItemBundlePath);
-
-            // Items patch
             ItemPatch.Start();
 
+            LogSource.LogInfo($"Custom items patch complete");
+
+            // -------------------------------------------------------- //
             // Stamina patch
+            // -------------------------------------------------------- //
+
             harmony.PatchAll(typeof(PlayerControllerBPatch));
 
+            LogSource.LogInfo($"Ladder stamina patch complete");
+
+            // -------------------------------------------------------- //
             // Start of round audio patch
+            // -------------------------------------------------------- //
+
             // harmony.PatchAll(typeof(StartOfRoundPatch));
 
+            // LogSource.LogInfo($"Round start audio patch complete");
+
+            // -------------------------------------------------------- //
             // MouthDogAI audio patch
+            // -------------------------------------------------------- //
+
             MouthDogAIAudioClips.Add(ItemAssetBundle.LoadAsset<AudioClip>("Assets/Sounds/Enemies/MouthDog/OndraYell1.wav"));
             harmony.PatchAll(typeof(MouthDogAIPatch));
 
-            // Plugin startup notice
-            LogSource.LogInfo($"{ModGUID} is loaded.");
+            LogSource.LogInfo($"Eyeless Dog audio patch complete");
+
+            // -------------------------------------------------------- //
+            // BoomBoxItem audio patch
+            // -------------------------------------------------------- //
+
+            BoomBoxItemAudioClips.Add(ItemAssetBundle.LoadAsset<AudioClip>("Assets/Sounds/BoomBox/RappSnitch.wav"));
+            BoomBoxItemAudioClips.Add(ItemAssetBundle.LoadAsset<AudioClip>("Assets/Sounds/BoomBox/MorgIce.wav"));
+            harmony.PatchAll(typeof(BoomBoxItemPatch));
+
+            LogSource.LogInfo($"Boombox audio patch complete");
+
+            // -------------------------------------------------------- //
+            // Plugin startup completed
+            // -------------------------------------------------------- //
+
+            LogSource.LogInfo($"Load complete");
         }
     }
 }

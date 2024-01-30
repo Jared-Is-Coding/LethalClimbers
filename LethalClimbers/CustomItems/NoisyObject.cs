@@ -49,7 +49,7 @@ namespace LethalClimbers.CustomItems
                 noiseAudio.PlayOneShot(noiseSFX[randomNoisePosition], volumeScale);
 
                 // Debug
-                BasePlugin.LogSource.LogDebug("noiseAudio.PlayOneShot was called");
+                BasePlugin.LogSource.LogDebug($"NoisyObject {GetInstanceID()} called noiseAudio.PlayOneShot");
 
                 if (noiseAudioFar != null && !noiseAudioFar.isPlaying)
                 {
@@ -57,7 +57,7 @@ namespace LethalClimbers.CustomItems
                     noiseAudioFar.PlayOneShot(noiseSFXFar[randomNoisePosition], volumeScale);
 
                     // Debug
-                    BasePlugin.LogSource.LogDebug("noiseAudioFar.PlayOneShot was called");
+                    BasePlugin.LogSource.LogDebug($"NoisyObject {GetInstanceID()} called noiseAudioFar.PlayOneShot");
                 }
 
                 if (triggerAnimator != null)
@@ -65,7 +65,7 @@ namespace LethalClimbers.CustomItems
                     triggerAnimator.SetTrigger("playAnim");
 
                     // Debug
-                    BasePlugin.LogSource.LogDebug("triggerAnimator.SetTrigger was called");
+                    BasePlugin.LogSource.LogDebug($"NoisyObject {GetInstanceID()} called triggerAnimator.SetTrigger");
                 }
 
                 WalkieTalkie.TransmitOneShotAudio(noiseAudio, noiseSFX[randomNoisePosition], volumeScale);
