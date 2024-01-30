@@ -2,6 +2,9 @@
 
 Here's what I've been up to...
 
+## v1.0.7
+- Add some more boombox tunes
+
 ## v1.0.6
 - Boombox now has some new tunes
 
