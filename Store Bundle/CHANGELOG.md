@@ -2,6 +2,9 @@
 
 Here's what I've been up to...
 
+## v1.1.0
+- Fix network synced audio for custom scraps
+
 ## v1.0.7
 - Add some more boombox tunes
 

@@ -84,10 +84,10 @@ namespace LethalClimbers.Patches
                 // Fix doubled sounds and other things
                 Utilities.FixMixerGroups(ThisScrapItemAsset.spawnPrefab);
 
-                // Set the item reference in the ItemData class
+                // Set item reference in ItemData class
                 ThisScrapItem.SetItem(ThisScrapItemAsset);
 
-                // Prepare item for sale if it needs it
+                // Prepare item for sale needed
                 if (ThisScrapItem.GetIsStoreItem())
                 {
                     TerminalNode terminalNode = UnityEngine.ScriptableObject.CreateInstance<TerminalNode>();

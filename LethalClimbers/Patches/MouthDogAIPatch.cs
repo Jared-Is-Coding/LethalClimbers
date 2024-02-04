@@ -11,7 +11,7 @@ namespace LethalClimbers.Patches
         [HarmonyPostfix]
         static void audioStart(MouthDogAI __instance)
         {
-            // Substitute a new scream SFX every time the MouthDogAI is updated
+            // Substitute a new scream SFX every time MouthDogAI is updated
             __instance.screamSFX = BasePlugin.MouthDogAIAudioClips.OrderBy(x => Guid.NewGuid()).FirstOrDefault();
 
             BasePlugin.LogSource.LogDebug($"{__instance} - Cycled to next audio file.");

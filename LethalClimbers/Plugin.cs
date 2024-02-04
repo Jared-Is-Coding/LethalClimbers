@@ -2,6 +2,7 @@ using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
 using LethalClimbers.Patches;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
@@ -17,7 +18,7 @@ namespace LethalClimbers
         // Base mod configuration
         private const string ModGUID = "jarediscoding.lethalclimbers";
         private const string ModName = "Lethal Climbers";
-        private const string ModVersion = "1.0.7"; // This should be bumped up for every release
+        private const string ModVersion = "1.1.0"; // This should be bumped up for every release
 
         // Logging
         public static ManualLogSource LogSource;
@@ -89,6 +90,27 @@ namespace LethalClimbers
             harmony.PatchAll(typeof(BoomBoxItemPatch));
 
             LogSource.LogInfo($"Boombox audio patch complete");
+
+            // -------------------------------------------------------- //
+            // NetcodePatcher
+            // -------------------------------------------------------- //
+
+            Type[] types = Assembly.GetExecutingAssembly().GetTypes();
+
+            foreach (var type in types)
+            {
+                MethodInfo[] methods = type.GetMethods(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
+
+                foreach (MethodInfo method in methods)
+                {
+                    object[] attributes = method.GetCustomAttributes(typeof(RuntimeInitializeOnLoadMethodAttribute), false);
+
+                    if (attributes.Length > 0)
+                    {
+                        method.Invoke(null, null);
+                    }
+                }
+            }
 
             // -------------------------------------------------------- //
             // Plugin startup completed

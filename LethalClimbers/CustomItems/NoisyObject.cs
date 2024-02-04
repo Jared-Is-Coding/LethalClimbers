@@ -1,19 +1,26 @@
-﻿using UnityEngine;
+using Unity.Netcode;
+using UnityEngine;
 
 namespace LethalClimbers.CustomItems
 {
     public class NoisyObject : GrabbableObject
     {
-        public AudioSource noiseAudio;
+        [Header("Audio Sources")]
+        [Space(1f)]
+        public AudioSource audioSource;
 
-        public AudioSource noiseAudioFar;
+        public AudioSource audioSourceFar;
 
         [Space(3f)]
+        [Header("Sound Effects")]
+        [Space(1f)]
         public AudioClip[] noiseSFX;
 
         public AudioClip[] noiseSFXFar;
 
         [Space(3f)]
+        [Header("Sound Settings")]
+        [Space(1f)]
         public float noiseRange;
 
         public float maxLoudness;
@@ -24,9 +31,8 @@ namespace LethalClimbers.CustomItems
 
         public float maxPitch;
 
+        [HideInInspector]
         private System.Random noisemakerRandom;
-
-        public Animator triggerAnimator;
 
         public override void Start()
         {
@@ -39,38 +45,54 @@ namespace LethalClimbers.CustomItems
         {
             base.ItemActivate(used, buttonDown);
 
-            if (!(GameNetworkManager.Instance.localPlayerController == null) && !noiseAudio.isPlaying)
+            if (IsOwner && !audioSource.isPlaying)
             {
+                // Prepare sound properties
                 int randomNoisePosition = noisemakerRandom.Next(0, noiseSFX.Length);
                 float volumeScale = noisemakerRandom.Next((int)(minLoudness * 100f), (int)(maxLoudness * 100f)) / 100f;
                 float pitch = noisemakerRandom.Next((int)(minPitch * 100f), (int)(maxPitch * 100f)) / 100f;
 
-                noiseAudio.pitch = pitch;
-                noiseAudio.PlayOneShot(noiseSFX[randomNoisePosition], volumeScale);
-
-                // Debug
-                BasePlugin.LogSource.LogDebug($"NoisyObject {GetInstanceID()} called noiseAudio.PlayOneShot");
-
-                if (noiseAudioFar != null && !noiseAudioFar.isPlaying)
-                {
-                    noiseAudioFar.pitch = pitch;
-                    noiseAudioFar.PlayOneShot(noiseSFXFar[randomNoisePosition], volumeScale);
-
-                    // Debug
-                    BasePlugin.LogSource.LogDebug($"NoisyObject {GetInstanceID()} called noiseAudioFar.PlayOneShot");
-                }
-
-                if (triggerAnimator != null)
-                {
-                    triggerAnimator.SetTrigger("playAnim");
-
-                    // Debug
-                    BasePlugin.LogSource.LogDebug($"NoisyObject {GetInstanceID()} called triggerAnimator.SetTrigger");
-                }
-
-                WalkieTalkie.TransmitOneShotAudio(noiseAudio, noiseSFX[randomNoisePosition], volumeScale);
-                RoundManager.Instance.PlayAudibleNoise(transform.position, noiseRange, volumeScale, 0, isInElevator && StartOfRound.Instance.hangarDoorsClosed);
+                // Send sound to the network
+                PlaySoundServerRpc(randomNoisePosition, volumeScale, pitch);
             }
+        }
+
+        [ServerRpc]
+        public void PlaySoundServerRpc(int randomNoisePosition, float volumeScale, float pitch)
+        {
+            PlaySoundClientRpc(randomNoisePosition, volumeScale, pitch);
+        }
+
+        [ClientRpc]
+        public void PlaySoundClientRpc(int randomNoisePosition, float volumeScale, float pitch)
+        {
+            PlaySoundFile(randomNoisePosition, volumeScale, pitch);
+        }
+
+        public void PlaySoundFile(int randomNoisePosition, float volumeScale, float pitch)
+        {
+            // Catch any doubled network sends
+            if (audioSource.isPlaying)
+            {
+                return;
+            }
+
+            // Play close audio
+            audioSource.pitch = pitch;
+            audioSource.PlayOneShot(noiseSFX[randomNoisePosition], volumeScale);
+
+            // Play far audio
+            if (audioSourceFar != null && !audioSourceFar.isPlaying)
+            {
+                audioSourceFar.pitch = pitch;
+                audioSourceFar.PlayOneShot(noiseSFXFar[randomNoisePosition], volumeScale);
+            }
+
+            // Transmit to walkie talkies
+            WalkieTalkie.TransmitOneShotAudio(audioSource, noiseSFX[randomNoisePosition], volumeScale);
+            
+            // Transmit to environment
+            RoundManager.Instance.PlayAudibleNoise(transform.position, noiseRange, volumeScale, 0, isInElevator && StartOfRound.Instance.hangarDoorsClosed);
         }
     }
 

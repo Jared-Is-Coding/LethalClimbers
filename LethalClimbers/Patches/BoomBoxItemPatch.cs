@@ -12,13 +12,13 @@ namespace LethalClimbers.Patches
         {
             int newClipCount = BasePlugin.BoomBoxItemAudioClips.Count;
 
-            // Get the original instance audio
+            // Get original instance audio
             AudioClip[] originalMusic = __instance.musicAudios;
 
             // Extend the array by one
             __instance.musicAudios = new AudioClip[originalMusic.Length + newClipCount];
 
-            // Fill the new array with the old instance audio clips
+            // Fill new array with old instance audio clips
             int musicArrayIndex = 0;
             foreach (AudioClip thisAudioClip in originalMusic)
             {
@@ -26,7 +26,7 @@ namespace LethalClimbers.Patches
                 musicArrayIndex++;
             }
 
-            // Add our new music
+            // Add new music
             foreach (AudioClip thisAudioClip in BasePlugin.BoomBoxItemAudioClips)
             {
                 __instance.musicAudios[musicArrayIndex] = thisAudioClip;
