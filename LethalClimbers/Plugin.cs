@@ -93,6 +93,7 @@ namespace LethalClimbers
 
             // -------------------------------------------------------- //
             // NetcodePatcher
+            // See: https://github.com/EvaisaDev/UnityNetcodePatcher
             // -------------------------------------------------------- //
 
             Type[] types = Assembly.GetExecutingAssembly().GetTypes();
