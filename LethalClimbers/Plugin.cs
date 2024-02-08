@@ -15,7 +15,7 @@ namespace LethalClimbers
     {
         private static BasePlugin Instance;
 
-        // Base mod configuration
+        // Base mod configuration 
         private const string ModGUID = "jarediscoding.lethalclimbers";
         private const string ModName = "Lethal Climbers";
         private const string ModVersion = "1.1.0"; // This should be bumped up for every release
@@ -85,7 +85,6 @@ namespace LethalClimbers
 
             BoomBoxItemAudioClips.Add(ItemAssetBundle.LoadAsset<AudioClip>("Assets/Sounds/BoomBox/RappSnitch.wav"));
             BoomBoxItemAudioClips.Add(ItemAssetBundle.LoadAsset<AudioClip>("Assets/Sounds/BoomBox/MorgIce.wav"));
-            BoomBoxItemAudioClips.Add(ItemAssetBundle.LoadAsset<AudioClip>("Assets/Sounds/BoomBox/Stay.wav"));
             BoomBoxItemAudioClips.Add(ItemAssetBundle.LoadAsset<AudioClip>("Assets/Sounds/BoomBox/BoyLiarPt2.wav"));
             harmony.PatchAll(typeof(BoomBoxItemPatch));
 
