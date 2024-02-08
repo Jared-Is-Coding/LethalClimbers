@@ -22,3 +22,13 @@ A Lethal Company mod for rock climbers! Add some of your favorite familiar objec
 ## Contributors
 - 3d model textures by [AidanShipperley](https://github.com/AidanShipperley)
 - Audio clips by [vulnic](https://github.com/vulnic)
+
+## Code Environment Setup
+
+1. Clone this repository
+2. In `...\LethalClimbers\LethalClimbers`, create a copy of `LethalClimbers.csproj.example` named `LethalClimbers.csproj`
+3. Modify the newly copied file and replace the placeholder directory roots with your relevant file locations
+    - `%GAME_LOCATION%` - Where your copy of Lethal Company is installed
+    - `%USER%` - Your `C:\Users` directory
+4. Install [Evaisa's UnityNetcodePatcher](https://github.com/EvaisaDev/UnityNetcodePatcher)
+5. You should now be able to compile the project
