@@ -10,12 +10,13 @@ A Lethal Company mod for rock climbers! Add some of your favorite familiar objec
 - Eyeless Dogs will now have a tasteful Adam Ondra power scream when they are aggravated
 - Boombox has some new tunes
 
-## Custom Scraps
+## 8 Custom Scraps
 - Chalk Brush
 - Chalk Bucket
 - Climbing Hold
-- Petzl Grigri
 - Helmet
+- Ice Axe
+- Petzl Grigri
 - Rope
 - Quickdraw
 

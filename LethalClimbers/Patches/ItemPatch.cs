@@ -4,63 +4,71 @@ namespace LethalClimbers.Patches
 {
     internal class ItemPatch
     {
-        // List of custom items
-        public static ItemData[] ItemList = new ItemData[]
+        // Moon types
+        private class MoonTypes
         {
-            new ItemData("Chalk Brush", 40, false, "Everyone has their own brushing technique. Some people do the old fashioned back and forth, others brush in small circles. Thankfully, you can’t do it wrong. Your goal is to get as close to the original texture of the hold as possible, leaving just a thin layer of chalk for grip.\n\nIf you’re really extreme, you can keep a spray bottle of isopropyl alcohol on you. It’ll lift the grime, helping you brush it away. Whatever alcohol is left evaporates in seconds.\n\nFinally, if you want to look like a crazy person, forget the brush altogether: take your shirt off and jump up and down as you whack the holds with it.\n\nRegardless of technique: Clean Holds = More Sends."),
-            new ItemData("Chalk Bucket", 40, false, "Chalk (aka magnesium carbonate, MgCO3) isn’t just for gymnasts: Climbers everywhere sport pasty white hands to combat moisture and improve grip.\n\nThe good news is that this is one climbing accessory where personal preference rules, and over-analysis isn’t needed. It’s OK to simply pick chalk by feel and chalk bags by color.\n\nChalk is either pure MgCO3 or an added drying agent is mixed in. Each formulation has its fans. Some welcome the extra drying, while others prefer the feel of pure chalk and would rather not breathe in the added agents.\n\nChalk bags hold a reservoir of loose chalk that you purchase separately. Plunge your hands in to get a thorough coating.\n\nLeaving behind chalk smears or visual aids like tick marks is considered very bad form. And if you’re generating clouds of dust each time you chalk up, you’re overdoing it. Use chalk judiciously, carry a brush and clean up after yourself. And always ask about the local ethic: Some climbing areas forbid the use of chalk altogether."),
-            new ItemData("Climbing Hold", 40, false, "A climbing hold is a shaped grip that is usually attached to a climbing wall so climbers can grab or step on it.\n\nOn most walls, climbing holds are arranged in paths, called routes, by specially trained route setters.\n\nClimbing holds come in a large array of sizes and shapes to provide different levels of challenge to a climber.\n\nClimbing holds are either bolted to a wall via hex-head bolts and existing t-nuts or they are screwed on with several small screws.\n\nIn extreme cases, concrete anchors may be used (if putting holds on the underside of a bridge, for example)."),
-            new ItemData("Grigri", 40, false, "The GriGri is an assisted braking belay device manufactured by Petzl. It is primarily used while rock climbing to maintain a safe and effective climbing system.\n\nLike all belay devices, the Grigri is used with climbing harnesses and climbing ropes to create a safe and efficient climbing system. Of course, when lead climbing or top-roping, the belayer must property load the climbing rope through the GriGri before anyone leaves the ground.\n\nOnce the rope is loaded into the GriGri, the device is attached to the belayer’s harness with a locking climbing carabiner. This system allows the belayer to serve as an anchor for the climber. Should the climber fall, the belayer’s weight creates tension in the rope and limits the fall distance in a controlled manner.\n\nThe GriGri allows the belayer to manage the system while the climber makes upward progress. The rope can move in both directions through a GriGri. A good belayer uses the device to maintain an appropriate amount of slack in the system."),
-            new ItemData("Helmet", 40, false, "Climbing helmets are designed to protect you against several common climbing scenarios; for example, when:\n\t- rocks or hardware get kicked loose above you\n\t- you peel off and whip into a wall\n\t- you hit your head on an overhang\n\nAll helmets must meet industry standards for impact protection, with the standard for overhead protection being greater than the side-protection standard."),
-            new ItemData("Quickdraw", 40, false, "A quickdraw (also known as an extender) is a piece of climbing equipment used by rock and ice climbers to allow the climbing rope to run freely through protection such as bolt anchors or other traditional gear while leading.\n\nA quickdraw consists of two carabiners connected by a semi-rigid material (sometimes called the \"dogbone\"). One carabiner has a straight gate and connects to an anchoring device. The other carabiner is for the climbing rope, and uses a bent gate.\n\nQuickdraws are manufactured with either a solid carabiner gate or a wire carabiner gate for its lighter weight."),
-            new ItemData("Rope", 30, false, "A climbing rope is a rope that is used in climbing. It is a critical part of an extensive chain of protective equipment (which also includes climbing harnesses, anchors, belay devices, and carabiners) used by climbers to help prevent potentially fatal fall-related accidents.\n\nClimbing ropes must meet very strict requirements so that they do not break in the event of an accidental fall. However, they also need to be light, flexible for knotting, and resistant to chafing over sharp and rough rocks; all that in all possible weather conditions.\n\nAlthough ropes made of natural fibres such as hemp and flax were used in the early days of alpinism, modern climbing uses kernmantle ropes made of a core of nylon or other synthetic material and intertwined in a special way, surrounded by a separate sheath woven over it. The main strength of the rope is in the core, and the sheath of the rope represents only a small fraction of the overall strength of the rope.\n\nClimbing ropes can be classified into three categories according to their elasticity: static, semi-static, and dynamic ropes.")
+            public static readonly Levels.LevelTypes IndustrialMoons = Levels.LevelTypes.ExperimentationLevel;
+            public static readonly Levels.LevelTypes ForestMoonws = Levels.LevelTypes.VowLevel & Levels.LevelTypes.MarchLevel;
+            public static readonly Levels.LevelTypes DesertMoons = Levels.LevelTypes.AssuranceLevel & Levels.LevelTypes.OffenseLevel;
+            public static readonly Levels.LevelTypes IceMoons = Levels.LevelTypes.DineLevel & Levels.LevelTypes.RendLevel & Levels.LevelTypes.TitanLevel;
+        }
+
+        // List of custom items
+        private static ItemData[] ItemList = new ItemData[]
+        {
+            new ItemData("Chalk Brush", 40),
+            new ItemData("Chalk Bucket", 40),
+            new ItemData("Climbing Hold", 40),
+            new ItemData("Grigri", 40),
+            new ItemData("Helmet", 40),
+            new ItemData("Ice Axe", 30, MoonTypes.IceMoons),
+            new ItemData("Quickdraw", 40),
+            new ItemData("Rope", 30)
         };
 
-        public class ItemData
+        private class ItemData
         {
             private Item ItemRef;
             private string Path;
             private string Name;
+            private Levels.LevelTypes ValidMoons;
             private int Rarity;
             private bool IsStoreItem;
-            private string Description;
+            private string StoreDescription;
             private int StoreValue;
 
-            private void WriteItemData(string path, int rarity, bool isStoreItem, string description, int storeValue)
+            private void WriteItemData(string path, int rarity, Levels.LevelTypes validMoons, bool isStoreItem, string storeDescription, int storeValue)
             {
                 Path = $"Assets/Items/{path}/{path}.asset";
                 Name = path.Split(".")[0];
                 Rarity = rarity;
+                ValidMoons = validMoons;
                 IsStoreItem = isStoreItem;
-                Description = description;
+                StoreDescription = storeDescription;
                 StoreValue = storeValue;
             }
 
             public ItemData(string path, int rarity)
             {
-                WriteItemData(path, rarity, false, "None", 0);
+                WriteItemData(path, rarity, Levels.LevelTypes.All, false, string.Empty, 0);
             }
 
-            public ItemData(string path, int rarity, bool isStoreItem)
+            public ItemData(string path, int rarity, Levels.LevelTypes validMoons)
             {
-                WriteItemData(path, rarity, isStoreItem, "None", 0);
+                WriteItemData(path, rarity, validMoons, false, string.Empty, 0);
             }
 
-            public ItemData(string path, int rarity, bool isStoreItem, string description)
+            public ItemData(string path, int rarity, Levels.LevelTypes validMoons, bool isStoreItem, string storeDescription, int storeValue)
             {
-                WriteItemData(path, rarity, isStoreItem, description, 0);
+                WriteItemData(path, rarity, validMoons, isStoreItem, storeDescription, storeValue);
             }
 
-            public ItemData(string path, int rarity, bool isStoreItem, string description, int storeValue)
-            {
-                WriteItemData(path, rarity, isStoreItem, description, storeValue);
-            }
-
-            public string GetItemPath() { return Path; }
-            public string GetItemName() { return Name; }
-            public string GetItemDescription() { return Description; }
+            public string GetPath() { return Path; }
+            public string GetName() { return Name; }
             public int GetRarity() { return Rarity; }
+            public Levels.LevelTypes GetValidMoons() { return ValidMoons; }
             public bool GetIsStoreItem() { return IsStoreItem; }
+            public string GetStoreDescription() { return StoreDescription; }
             public int GetStoreValue() { return StoreValue; }
             public void SetItem(Item ItemToSet) { ItemRef = ItemToSet; }
             public Item GetItem() { return ItemRef; }
@@ -73,13 +81,13 @@ namespace LethalClimbers.Patches
             foreach (ItemData ThisScrapItem in ItemList)
             {
                 // Load item
-                ThisScrapItemAsset = BasePlugin.ItemAssetBundle.LoadAsset<Item>(ThisScrapItem.GetItemPath());
+                ThisScrapItemAsset = BasePlugin.ItemAssetBundle.LoadAsset<Item>(ThisScrapItem.GetPath());
 
                 // Register item with other clients
                 NetworkPrefabs.RegisterNetworkPrefab(ThisScrapItemAsset.spawnPrefab);
 
                 // Register item locally
-                Items.RegisterScrap(ThisScrapItemAsset, ThisScrapItem.GetRarity(), Levels.LevelTypes.All);
+                Items.RegisterScrap(ThisScrapItemAsset, ThisScrapItem.GetRarity(), ThisScrapItem.GetValidMoons());
 
                 // Fix doubled sounds and other things
                 Utilities.FixMixerGroups(ThisScrapItemAsset.spawnPrefab);
@@ -92,7 +100,7 @@ namespace LethalClimbers.Patches
                 {
                     TerminalNode terminalNode = UnityEngine.ScriptableObject.CreateInstance<TerminalNode>();
                     terminalNode.clearPreviousText = true;
-                    terminalNode.displayText = $"Here's some info about a {ThisScrapItem.GetItemName()}:\n\n{ThisScrapItem.GetItemDescription()}";
+                    terminalNode.displayText = $"Here's some info about a {ThisScrapItem.GetName()}:\n\n{ThisScrapItem.GetStoreDescription()}";
                     Items.RegisterShopItem(ThisScrapItemAsset, null, null, terminalNode, ThisScrapItem.GetStoreValue());
                 }
 
