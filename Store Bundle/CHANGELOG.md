@@ -2,6 +2,9 @@
 
 Here's what I've been up to...
 
+## v1.1.2
+- Updated changelogs
+
 ## v1.1.1
 - Add Ice Axe item
 - Add one new song to boombox
