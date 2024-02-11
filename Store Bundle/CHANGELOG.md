@@ -2,6 +2,10 @@
 
 Here's what I've been up to...
 
+## v1.1.1
+- Add Ice Axe item
+- Add one new song to boombox
+
 ## v1.1.0
 - Fix network synced audio for custom scraps
 
