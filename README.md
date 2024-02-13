@@ -26,6 +26,8 @@ A Lethal Company mod for rock climbers! Add some of your favorite familiar objec
 
 ## Code Environment Setup
 
+Want to extend or modify this repository? Here's some steps to get set up.
+
 1. Clone this repository
 2. In `...\LethalClimbers\LethalClimbers`, create a copy of `LethalClimbers.csproj.example` named `LethalClimbers.csproj`
 3. Modify the newly copied file and replace the placeholder directory roots with your relevant file locations

@@ -10,114 +10,107 @@ using UnityEngine;
 
 namespace LethalClimbers
 {
-    [BepInPlugin(ModGUID, ModName, ModVersion)]
-    public class BasePlugin : BaseUnityPlugin
-    {
-        private static BasePlugin Instance;
+	[BepInPlugin(ModGUID, ModName, ModVersion)]
+	public class BasePlugin : BaseUnityPlugin
+	{
+		private static BasePlugin Instance;
 
-        // Base mod configuration 
-        private const string ModGUID = "jarediscoding.lethalclimbers";
-        private const string ModName = "Lethal Climbers";
-        private const string ModVersion = "1.1.2"; // This should be bumped up for every release
+		// Base mod configuration 
+		private const string ModGUID = "jarediscoding.lethalclimbers";
+		private const string ModName = "Lethal Climbers";
+		private const string ModVersion = "1.1.2"; // This should be bumped up for every release
 
-        // Logging
-        public static ManualLogSource LogSource;
+		// Logging
+		public static ManualLogSource LogSource;
 
-        // Harmony framework prep
-        private readonly Harmony harmony = new Harmony(ModGUID);
+		// Harmony framework prep
+		private readonly Harmony harmony = new Harmony(ModGUID);
 
-        // Assets preparation
-        public static AssetBundle ItemAssetBundle;
+		// Assets preparation
+		public static AssetBundle ItemAssetBundle;
 
-        // Audio clip lists
-        public static List<AudioClip> MouthDogAIAudioClips = new List<AudioClip>();
-        public static List<AudioClip> BoomBoxItemAudioClips = new List<AudioClip>();
+		// Audio clip lists
+		public static List<AudioClip> MouthDogAIAudioClips = new List<AudioClip>();
+		public static List<AudioClip> BoomBoxItemAudioClips = new List<AudioClip>();
 
-        void Awake()
-        {
-            // Safety catch
-            if (Instance == null)
-            {
-                Instance = this;
-            }
+		// Patch list
+		private static readonly Type[] PatchList = new Type[]
+		{
+			typeof(PlayerControllerBPatch), // Ladder stamina patch
+			// typeof(StartOfRoundPatch), // Start of round audio patch
+			typeof(MouthDogAIPatch), // MouthDogAI audio patch
+			typeof(BoomBoxItemPatch) // BoomBoxItem audio patch
+		};
 
-            // Prepare logger
-            LogSource = BepInEx.Logging.Logger.CreateLogSource(ModGUID);
+		void Awake()
+		{
+			// Safety catch
+			if (Instance == null)
+			{
+				Instance = this;
+			}
 
-            // -------------------------------------------------------- //
-            // Items patch
-            // -------------------------------------------------------- //
+			// Prepare logger
+			LogSource = BepInEx.Logging.Logger.CreateLogSource(ModGUID);
 
-            string ItemBundlePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "customitems");
-            ItemAssetBundle = AssetBundle.LoadFromFile(ItemBundlePath);
-            ItemPatch.Start();
+			// -------------------------------------------------------- //
+			// Items patch
+			// -------------------------------------------------------- //
 
-            LogSource.LogInfo($"Custom items patch complete");
+			string ItemBundlePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "customitems");
+			ItemAssetBundle = AssetBundle.LoadFromFile(ItemBundlePath);
+			ItemPatch.Start();
 
-            // -------------------------------------------------------- //
-            // Stamina patch
-            // -------------------------------------------------------- //
+			LogSource.LogInfo($"Custom items patch complete");
 
-            harmony.PatchAll(typeof(PlayerControllerBPatch));
+			// -------------------------------------------------------- //
+			// Prepare audio clips
+			// -------------------------------------------------------- //
 
-            LogSource.LogInfo($"Ladder stamina patch complete");
+			MouthDogAIAudioClips.Add(ItemAssetBundle.LoadAsset<AudioClip>("Assets/Sounds/Enemies/MouthDog/OndraYell1.wav"));
+			BoomBoxItemAudioClips.Add(ItemAssetBundle.LoadAsset<AudioClip>("Assets/Sounds/BoomBox/RappSnitch.wav"));
+			BoomBoxItemAudioClips.Add(ItemAssetBundle.LoadAsset<AudioClip>("Assets/Sounds/BoomBox/MorgIce.wav"));
+			BoomBoxItemAudioClips.Add(ItemAssetBundle.LoadAsset<AudioClip>("Assets/Sounds/BoomBox/FeelGood.wav"));
+			BoomBoxItemAudioClips.Add(ItemAssetBundle.LoadAsset<AudioClip>("Assets/Sounds/BoomBox/BoyLiarPt2.wav"));
 
-            // -------------------------------------------------------- //
-            // Start of round audio patch
-            // -------------------------------------------------------- //
+			// -------------------------------------------------------- //
+			// Initialize patches
+			// -------------------------------------------------------- //
+			
+			foreach (Type thisType in PatchList)
+			{
+				harmony.PatchAll(thisType);
 
-            // harmony.PatchAll(typeof(StartOfRoundPatch));
+				LogSource.LogDebug($"{thisType} complete");
+			}
 
-            // LogSource.LogInfo($"Round start audio patch complete");
+			// -------------------------------------------------------- //
+			// NetcodePatcher
+			// See: https://github.com/EvaisaDev/UnityNetcodePatcher
+			// -------------------------------------------------------- //
 
-            // -------------------------------------------------------- //
-            // MouthDogAI audio patch
-            // -------------------------------------------------------- //
+			Type[] types = Assembly.GetExecutingAssembly().GetTypes();
 
-            MouthDogAIAudioClips.Add(ItemAssetBundle.LoadAsset<AudioClip>("Assets/Sounds/Enemies/MouthDog/OndraYell1.wav"));
-            harmony.PatchAll(typeof(MouthDogAIPatch));
+			foreach (var type in types)
+			{
+				MethodInfo[] methods = type.GetMethods(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
 
-            LogSource.LogInfo($"Eyeless Dog audio patch complete");
+				foreach (MethodInfo method in methods)
+				{
+					object[] attributes = method.GetCustomAttributes(typeof(RuntimeInitializeOnLoadMethodAttribute), false);
 
-            // -------------------------------------------------------- //
-            // BoomBoxItem audio patch
-            // -------------------------------------------------------- //
+					if (attributes.Length > 0)
+					{
+						method.Invoke(null, null);
+					}
+				}
+			}
 
-            BoomBoxItemAudioClips.Add(ItemAssetBundle.LoadAsset<AudioClip>("Assets/Sounds/BoomBox/RappSnitch.wav"));
-            BoomBoxItemAudioClips.Add(ItemAssetBundle.LoadAsset<AudioClip>("Assets/Sounds/BoomBox/MorgIce.wav"));
-            BoomBoxItemAudioClips.Add(ItemAssetBundle.LoadAsset<AudioClip>("Assets/Sounds/BoomBox/FeelGood.wav"));
-            BoomBoxItemAudioClips.Add(ItemAssetBundle.LoadAsset<AudioClip>("Assets/Sounds/BoomBox/BoyLiarPt2.wav"));
-            harmony.PatchAll(typeof(BoomBoxItemPatch));
+			// -------------------------------------------------------- //
+			// Plugin startup completed
+			// -------------------------------------------------------- //
 
-            LogSource.LogInfo($"Boombox audio patch complete");
-
-            // -------------------------------------------------------- //
-            // NetcodePatcher
-            // See: https://github.com/EvaisaDev/UnityNetcodePatcher
-            // -------------------------------------------------------- //
-
-            Type[] types = Assembly.GetExecutingAssembly().GetTypes();
-
-            foreach (var type in types)
-            {
-                MethodInfo[] methods = type.GetMethods(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
-
-                foreach (MethodInfo method in methods)
-                {
-                    object[] attributes = method.GetCustomAttributes(typeof(RuntimeInitializeOnLoadMethodAttribute), false);
-
-                    if (attributes.Length > 0)
-                    {
-                        method.Invoke(null, null);
-                    }
-                }
-            }
-
-            // -------------------------------------------------------- //
-            // Plugin startup completed
-            // -------------------------------------------------------- //
-
-            LogSource.LogInfo($"Load complete");
-        }
-    }
+			LogSource.LogInfo($"Load complete");
+		}
+	}
 }
