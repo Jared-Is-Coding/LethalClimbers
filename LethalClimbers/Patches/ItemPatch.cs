@@ -8,7 +8,7 @@ namespace LethalClimbers.Patches
 		private class MoonTypes
 		{
 			public static readonly Levels.LevelTypes IndustrialMoons = Levels.LevelTypes.ExperimentationLevel;
-			public static readonly Levels.LevelTypes ForestMoonws = Levels.LevelTypes.VowLevel & Levels.LevelTypes.MarchLevel;
+			public static readonly Levels.LevelTypes ForestMoons = Levels.LevelTypes.VowLevel & Levels.LevelTypes.MarchLevel;
 			public static readonly Levels.LevelTypes DesertMoons = Levels.LevelTypes.AssuranceLevel & Levels.LevelTypes.OffenseLevel;
 			public static readonly Levels.LevelTypes IceMoons = Levels.LevelTypes.DineLevel & Levels.LevelTypes.RendLevel & Levels.LevelTypes.TitanLevel;
 		}

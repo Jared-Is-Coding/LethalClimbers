@@ -2,6 +2,10 @@
 
 Here's what I've been up to...
 
+## v1.2.0
+- Update dependencies and rebuild
+- Fixed some code typos
+
 ## v1.1.2
 - Updated changelogs
 
